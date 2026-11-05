@@ -37,7 +37,7 @@ export const profile = {
    * has to be honest: raise it and the whole board's level judgement moves with
    * it.
    */
-  yearsExperience: 2,
+  yearsExperience: 3,
 
   /**
    * Where you'd actually go. Separate from eligibility: a Noida role is one you
@@ -73,7 +73,7 @@ export const profile = {
     "product engineer",
     "sde",
     /**
-     * "Python Developer" and "Golang Developer" carry no other role or level
+     * "Java Developer" and "Kotlin Developer" carry no other role or level
      * word, so without this they sat at 58, under the watcher's 70. Off-stack
      * developer titles (".NET Developer") still lose 22 for the stack.
      */
@@ -93,48 +93,49 @@ export const profile = {
    * "React.js" matches "react", but "ReactJS" does not.
    */
   techKeywords: [
+    "java",
+    "kotlin",
+    "spring",
+    "spring boot",
+    "springboot",
+    "spring-boot",
+    "hibernate",
+    "jpa",
+    "microservices",
     "python",
-    "django",
     "fastapi",
-    "flask",
-    "go",
-    "golang",
     "typescript",
-    "javascript",
     "node",
     "nodejs",
     "node.js",
-    "react",
-    "reactjs",
-    "react.js",
-    "next.js",
-    "nextjs",
+    "websocket",
     "postgres",
     "postgresql",
-    "graphql",
+    "mongodb",
+    "kafka",
+    "rabbitmq",
     "redis",
+    "aws",
+    "docker",
     "kubernetes",
     "grpc",
   ],
 
   /**
-   * The part of `techKeywords` you get shortlisted on: Python, Go and Node.
-   * These carry the full stack weight. The rest of `techKeywords` (React,
-   * Postgres, Kubernetes and so on) still counts, but at a fraction, so a
-   * "React Developer" role no longer ranks level with a "Golang Developer" one.
+   * The part of `techKeywords` you get shortlisted on: Java, Kotlin and Spring
+   * Boot. These carry the full stack weight. The rest of `techKeywords` (Node,
+   * Python, Postgres, Kafka and so on) still counts, but at a fraction, so a
+   * "Node Developer" role no longer ranks level with a "Java Developer" one.
    *
    * Every entry here must also be in `techKeywords`.
    */
   primaryStack: [
-    "python",
-    "django",
-    "fastapi",
-    "flask",
-    "go",
-    "golang",
-    "node",
-    "nodejs",
-    "node.js",
+    "java",
+    "kotlin",
+    "spring",
+    "spring boot",
+    "springboot",
+    "spring-boot",
   ],
 
   /**
@@ -163,13 +164,9 @@ export const profile = {
     "winforms",
     "xamarin",
     "blazor",
-    // Java
-    "java",
+    // Legacy Java web stacks (modern Java/Spring is your primary stack)
     "j2ee",
     "jsp",
-    "spring boot",
-    "spring mvc",
-    "hibernate",
     "struts",
     // Front-end frameworks that aren't yours
     "angular",
@@ -236,7 +233,7 @@ export const profile = {
   /**
    * Your level, as a band rather than a single target: you'd take SDE-1 or
    * SDE-2, a Senior req is a stretch worth seeing but not worth ranking first,
-   * and anything above that is a waste of an application at 2 YOE.
+   * and anything above that is a waste of an application at 3 YOE.
    *
    * All three lists are matched as terms against the *title*, so "ii" hits
    * "Engineer II" but not "VIII".
@@ -271,7 +268,7 @@ export const profile = {
      * Three of those banking "Associate" reqs were scoring 100.
      */
     stretch: ["senior", "sr", "iii", "3", "associate"],
-    /** Not happening at 2 YOE, or not an IC role at all. */
+    /** Not happening at 3 YOE, or not an IC role at all. */
     avoid: [
       "intern",
       "internship",
@@ -320,7 +317,6 @@ export const profile = {
     "react native",
     "flutter",
     "swift",
-    "kotlin",
     "embedded",
     "firmware",
     "hardware",
@@ -452,11 +448,11 @@ export const profile = {
     /** Senior: still shown, but never above a role in your own band. */
     levelStretch: -14,
     levelAvoid: -45,
-    /** Python, Go or Node named in the title. A deliberate signal. */
+    /** Java, Kotlin or Spring Boot named in the title. A deliberate signal. */
     techMatch: 14,
-    /** Python, Go or Node only in the body. Every JD lists a dozen technologies. */
+    /** Java, Kotlin or Spring Boot only in the body. Every JD lists a dozen technologies. */
     techMatchBody: 6,
-    /** The rest of your stack (React, Postgres...) in the title, no primary anywhere. */
+    /** The rest of your stack (Node, Python, Postgres...) in the title, no primary anywhere. */
     techSecondary: 6,
     /** The rest of your stack only in the body. */
     techSecondaryBody: 2,
