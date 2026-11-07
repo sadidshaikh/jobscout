@@ -152,18 +152,81 @@ When a form asks something new, say "save that to the bank" and future forms wil
 
 ## Part 2: The watcher (phone alerts on its own)
 
-- **What it does:** runs every search in `tools/watch/searches.json` over the last 12 hours. The current searches cover Java, Spring Boot, Kotlin, backend, SDE 2, software engineer, remote and Pune.
-- **Alerts:** it sends a phone notification through **ntfy** for any job scoring **70 or more**. Change the cutoff with the `WATCH_THRESHOLD` setting.
-- **Where it runs:** GitHub Actions (`.github/workflows/watch.yml`), every hour. You don't have to keep anything running on your laptop.
+- **What it does:** each run does two things:
+  - runs every search in `tools/watch/searches.json` (13 LinkedIn searches) over the last 12 hours, and reads each new job's full description before scoring it
+  - checks the career sites of the companies in `src/lib/companies.ts`, which often have jobs before LinkedIn does
+- **Alerts:** it sends a phone notification through **ntfy** for any new job scoring **70 or more**. It remembers the jobs it has seen, so it never alerts on the same job twice.
+- **Where it runs:** GitHub Actions (`.github/workflows/watch.yml`). cron-job.org starts it every 15 minutes, so your laptop can be off.
 - **Run it locally:** `pnpm watch` shows what it would alert on right now.
 - **Optional:** `DATABASE_URL` stores the alerts so the app's `/alerts` page can show them.
 
+### What it covers and what stays manual
+| Watcher does it | You do it with the MCP tools |
+|---|---|
+| Job listings (`jobs_search`) | Recruiter hiring posts (`posts_search`), which need your logged-in Chrome |
+| Job details and scoring (`job_detail`) | Reading, filling and submitting forms (`form_*`) |
+| Company career sites | DMs and emails to recruiters, plus Easy Apply and Workday applications |
+
+### How the pieces fit
+```
+cron-job.org (every 15 min) ──starts──▶ GitHub Actions ──runs watcher──▶ LinkedIn + company career sites ──▶ 📱 ntfy alert
+```
+- **GitHub Actions is the computer** that runs the code.
+- **cron-job.org is only the timer.** GitHub's own built-in schedule is best-effort on free repos and skips most runs; we've seen gaps of 7 hours or more. A direct start request from cron-job.org isn't skipped. The built-in hourly schedule stays as a fallback.
+
 ### Turn it on
-1. Install the **ntfy** app on your phone.
-2. Subscribe to a topic name that's hard to guess, e.g. `yourname-jobs-x7k2`.
-3. Add it as a repo secret: `gh secret set NTFY_TOPIC --repo <owner>/jobscout`.
-4. Trigger a test run: `gh workflow run watch.yml --repo <owner>/jobscout`.
-5. Optional: GitHub often skips hourly scheduled runs. A free cron-job.org job that calls GitHub's API to start the workflow can run it every 15 minutes.
+
+**1. Set up ntfy on your phone**
+1. Install the **ntfy** app. It's free and needs no account.
+2. Tap **+ Subscribe to topic** and pick a topic name that's hard to guess, e.g. `yourname-jobs-x7k2q9`. Keep the server as `ntfy.sh`.
+3. Treat the topic name like a password: the repo is public, and anyone who knows the name can read your alerts.
+
+**2. Add the topic as a repo secret**
+```sh
+gh auth switch -u <your-github-user>          # if gh is on another account
+gh secret set NTFY_TOPIC --repo <owner>/jobscout
+```
+
+**3. Run a test**
+1. Check that Actions is enabled on the repo's **Actions** tab.
+2. Start a run and follow it:
+   ```sh
+   gh workflow run watch.yml --repo <owner>/jobscout
+   gh run watch --repo <owner>/jobscout
+   ```
+3. The log line looks like `ats=88 changed=3 li=130/34new alerts=4`:
+   - `ats`: company career sites checked, and how many of them changed
+   - `li`: LinkedIn jobs found, and how many are new
+   - `alerts`: notifications sent
+4. On a brand-new setup, the first run sends no alerts. It records the existing jobs (the log says `seeded`) so you don't get flooded.
+
+**4. Run it every 15 minutes with cron-job.org**
+1. **Create a fine-grained GitHub token:** go to https://github.com/settings/personal-access-tokens/new.
+   - **Repository access:** only `<owner>/jobscout`
+   - **Permissions → Actions:** Read and write
+   - Without that permission, GitHub returns `403 Resource not accessible by personal access token`.
+2. **Test the token** (`204` means it works):
+   ```sh
+   curl -s -o /dev/null -w "%{http_code}\n" -X POST \
+     -H "Authorization: Bearer <token>" -H "Accept: application/vnd.github+json" \
+     https://api.github.com/repos/<owner>/jobscout/actions/workflows/watch.yml/dispatches \
+     -d '{"ref":"main"}'
+   ```
+3. **Create the job:** at https://cron-job.org (free account), click **Create cronjob**.
+   - **URL:** `https://api.github.com/repos/<owner>/jobscout/actions/workflows/watch.yml/dispatches`
+   - **Schedule:** every 15 minutes
+   - **Advanced → Request method:** `POST`
+   - **Headers:**
+     - `Authorization: Bearer <token>`
+     - `Accept: application/vnd.github+json`
+   - **Body:** `{"ref":"main"}`
+4. **Check it:** click **Test run**. You should see `204`, and a `workflow_dispatch` run should appear on the Actions tab.
+
+### Keep it running
+- **The token expires** on the date you set when you created it. After that, cron-job.org gets errors and the runs stop. Create a new token and update the `Authorization` header in cron-job.org.
+- **GitHub turns off the built-in schedule** after 60 days without a commit. cron-job.org starts are unaffected.
+- **Never commit the token or the topic name.** They belong only in cron-job.org and in repo secrets.
+- **Changing the alert cutoff:** `WATCH_THRESHOLD` works locally. In GitHub Actions it only works once `WATCH_THRESHOLD` is added to the `env:` block in `watch.yml`.
 
 ### Tuning
 - Searches: edit `tools/watch/searches.json`.
