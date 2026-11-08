@@ -11,5 +11,9 @@
   { "keywords": "sde 2", "location": "India", "experience": ["entry", "associate", "mid-senior"], "postedWithinSeconds": 43200, "sort": "DD" },
   { "keywords": "software developer", "location": "India", "experience": ["entry", "associate", "mid-senior"], "postedWithinSeconds": 43200, "sort": "DD" },
   { "keywords": "software engineer", "location": "India", "workplace": ["remote"], "experience": ["entry", "associate", "mid-senior"], "postedWithinSeconds": 43200, "sort": "DD" },
-  { "keywords": "software engineer", "location": "Pune, Maharashtra, India", "experience": ["entry", "associate", "mid-senior"], "postedWithinSeconds": 43200, "sort": "DD" }
+  { "keywords": "software engineer", "location": "Pune, Maharashtra, India", "experience": ["entry", "associate", "mid-senior"], "postedWithinSeconds": 43200, "sort": "DD" },
+  { "keywords": "application developer", "location": "Pune, Maharashtra, India", "experience": ["entry", "associate", "mid-senior"], "postedWithinSeconds": 43200, "sort": "DD" },
+  { "keywords": "application engineer", "location": "Pune, Maharashtra, India", "experience": ["entry", "associate", "mid-senior"], "postedWithinSeconds": 43200, "sort": "DD" },
+  { "keywords": "swe", "location": "Pune, Maharashtra, India", "experience": ["entry", "associate", "mid-senior"], "postedWithinSeconds": 43200, "sort": "DD" },
+  { "keywords": "sde", "location": "Pune, Maharashtra, India", "experience": ["entry", "associate", "mid-senior"], "postedWithinSeconds": 43200, "sort": "DD" }
 ]

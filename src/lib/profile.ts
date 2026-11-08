@@ -49,7 +49,30 @@ export const profile = {
    */
   locations: {
     /** On-site or hybrid in these is fine. Matched as words, any spelling listed. */
-    cities: ["pune", "bangalore", "bengaluru", "hyderabad", "mumbai", "navi mumbai", "thane"],
+    cities: [
+      // Maharashtra
+      "pune", "pimpri", "chinchwad", "hinjewadi", "mumbai", "navi mumbai", "thane", "nagpur", "nashik",
+      "aurangabad",
+      // Karnataka
+      "bangalore", "bengaluru", "mysore", "mysuru", "mangalore", "mangaluru", "hubli",
+      // Telangana / Andhra Pradesh
+      "hyderabad", "secunderabad", "visakhapatnam", "vizag", "vijayawada",
+      // Tamil Nadu
+      "chennai", "coimbatore", "madurai", "trichy", "tiruchirappalli",
+      // Kerala
+      "kochi", "cochin", "trivandrum", "thiruvananthapuram", "kozhikode", "calicut",
+      // Delhi NCR
+      "delhi", "new delhi", "ncr", "delhi ncr", "noida", "greater noida", "gurgaon", "gurugram",
+      "faridabad", "ghaziabad",
+      // North
+      "chandigarh", "mohali", "panchkula", "jaipur", "lucknow", "kanpur", "dehradun", "ludhiana",
+      // West / Central
+      "ahmedabad", "gandhinagar", "gift city", "vadodara", "surat", "rajkot", "indore", "bhopal", "goa",
+      // East
+      "kolkata", "bhubaneswar", "patna", "ranchi", "guwahati",
+      // Postings that name the country, not a city
+      "pan india", "pan-india", "anywhere in india", "multiple locations",
+    ],
     /** Remote is fine when it's open to someone in India: India, US-remote or anywhere. */
     remote: true,
     /** On-site outside India only when the post offers sponsorship or relocation. */
@@ -70,8 +93,10 @@ export const profile = {
     "software developer",
     "platform engineer",
     "application engineer",
+    "application developer",
     "product engineer",
     "sde",
+    "swe",
     /**
      * "Java Developer" and "Kotlin Developer" carry no other role or level
      * word, so without this they sat at 58, under the watcher's 70. Off-stack
