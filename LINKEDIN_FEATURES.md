@@ -155,7 +155,7 @@ When a form asks something new, say "save that to the bank" and future forms wil
 - **What it does:** each run does two things:
   - runs every search in `tools/watch/searches.json` (13 LinkedIn searches) over the last 12 hours, and reads each new job's full description before scoring it
   - checks the career sites of the companies in `src/lib/companies.ts`, which often have jobs before LinkedIn does
-- **Alerts:** it sends a phone notification through **ntfy** for any new job scoring **70 or more**. It remembers the jobs it has seen, so it never alerts on the same job twice.
+- **Alerts:** it sends a phone notification through **ntfy** for any new job scoring **50 or more**. It remembers the jobs it has seen, so it never alerts on the same job twice.
 - **Where it runs:** GitHub Actions (`.github/workflows/watch.yml`). cron-job.org starts it every 15 minutes, so your laptop can be off.
 - **Run it locally:** `pnpm watch` shows what it would alert on right now.
 - **Optional:** `DATABASE_URL` stores the alerts so the app's `/alerts` page can show them.

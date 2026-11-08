@@ -251,7 +251,7 @@ async function pollLinkedIn(state: State, cfg: Config): Promise<{ hits: Hit[]; s
 
 async function main() {
   mkdirSync(DIR, { recursive: true });
-  const cfg: Config = { threshold: 70, maxAgeHours: DEFAULT_MAX_AGE_H, ...load<Partial<Config>>(CONFIG, {}) };
+  const cfg: Config = { threshold: 50, maxAgeHours: DEFAULT_MAX_AGE_H, ...load<Partial<Config>>(CONFIG, {}) };
   // In Actions there's no ~/.jobscout/watch.json; settings come from secrets/vars.
   if (process.env.NTFY_TOPIC) cfg.ntfyTopic = process.env.NTFY_TOPIC;
   if (process.env.WATCH_THRESHOLD) cfg.threshold = Number(process.env.WATCH_THRESHOLD);
